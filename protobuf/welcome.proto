@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message Welcome {
+  int64 session_id = 1;
+  string authrole = 2;
+}

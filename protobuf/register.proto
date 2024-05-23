@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message Register {
+  int64 request_id = 1;
+  string procedure = 2;
+}
