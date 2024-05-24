@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+message Challenge {
+  string auth_method = 1;
+}

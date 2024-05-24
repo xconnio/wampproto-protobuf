@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message Result {
+  int64 request_id = 1;
+  bytes payload = 2;
+  int32 payload_serializer = 3;
+}

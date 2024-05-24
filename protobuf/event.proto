@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message Event {
+  int64 subscription_id = 1;
+  int64 publication_id = 2;
+  bytes payload = 3;
+  int32 payload_serializer = 4;
+}

@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message UnSubscribe {
+  int64 request_id = 1;
+  int64 subscription_id = 2;
+}

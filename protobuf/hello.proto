@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message Hello {
+  string realm = 1;
+  string authid = 2;
+  string authprovider = 3;
+  repeated string authmethod = 4;
+}

@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message Abort {
+  string reason = 1;
+  bytes payload = 2;
+  int32 payload_serializer = 3;
+}
