@@ -1,6 +1,7 @@
 package parsers
 
 import (
+	"github.com/fxamacker/cbor/v2"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
@@ -36,10 +37,19 @@ func (c *Call) KwArgs() map[string]any {
 }
 
 func CallToProtobuf(call *messages.Call) ([]byte, error) {
+	var payload []any
+	payload = append(payload, call.Args())
+	payload = append(payload, call.KwArgs())
+	payloadData, err := cbor.Marshal(payload)
+	if err != nil {
+		return nil, err
+	}
+
 	msg := &gen.Call{
 		RequestId:         call.RequestID(),
 		Procedure:         call.Procedure(),
 		PayloadSerializer: 1,
+		Payload:           payloadData,
 	}
 
 	data, err := proto.Marshal(msg)
