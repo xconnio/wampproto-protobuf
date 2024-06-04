@@ -1,5 +1,5 @@
 .idea/
-go/
 kotlin/
 dart/
 .venv/
+.DS_Store
