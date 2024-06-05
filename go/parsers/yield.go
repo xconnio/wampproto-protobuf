@@ -1,7 +1,6 @@
 package parsers
 
 import (
-	"github.com/fxamacker/cbor/v2"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
@@ -9,15 +8,15 @@ import (
 )
 
 type yieldFields struct {
-	resultGen *gen.Yield
+	gen *gen.Yield
 }
 
 func NewYieldFields(gen *gen.Yield) messages.YieldFields {
-	return &yieldFields{resultGen: gen}
+	return &yieldFields{gen: gen}
 }
 
 func (r *yieldFields) RequestID() int64 {
-	return r.resultGen.GetRequestId()
+	return r.gen.GetRequestId()
 }
 
 func (r *yieldFields) Options() map[string]any {
@@ -32,19 +31,28 @@ func (r *yieldFields) KwArgs() map[string]any {
 	return nil
 }
 
+func (r *yieldFields) PayloadIsBinary() bool {
+	return true
+}
+
+func (r *yieldFields) Payload() []byte {
+	return r.gen.GetPayload()
+}
+
+func (r *yieldFields) PayloadSerializer() int {
+	return int(r.gen.GetPayloadSerializer())
+}
+
 func YieldToProtobuf(yield *messages.Yield) ([]byte, error) {
-	var payload []any
-	payload = append(payload, yield.Args())
-	payload = append(payload, yield.KwArgs())
-	payloadData, err := cbor.Marshal(payload)
+	payload, serializer, err := ToCBORPayload(yield)
 	if err != nil {
 		return nil, err
 	}
 
 	msg := &gen.Yield{
 		RequestId:         yield.RequestID(),
-		PayloadSerializer: 1,
-		Payload:           payloadData,
+		PayloadSerializer: int32(serializer),
+		Payload:           payload,
 	}
 
 	data, err := proto.Marshal(msg)

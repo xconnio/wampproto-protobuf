@@ -8,15 +8,15 @@ import (
 )
 
 type resultFields struct {
-	resultGen *gen.Result
+	gen *gen.Result
 }
 
 func NewResultFields(gen *gen.Result) messages.ResultFields {
-	return &resultFields{resultGen: gen}
+	return &resultFields{gen: gen}
 }
 
 func (r *resultFields) RequestID() int64 {
-	return r.resultGen.GetRequestId()
+	return r.gen.GetRequestId()
 }
 
 func (r *resultFields) Details() map[string]any {
@@ -31,10 +31,28 @@ func (r *resultFields) KwArgs() map[string]any {
 	return nil
 }
 
+func (r *resultFields) PayloadIsBinary() bool {
+	return true
+}
+
+func (r *resultFields) Payload() []byte {
+	return r.gen.GetPayload()
+}
+
+func (r *resultFields) PayloadSerializer() int {
+	return int(r.gen.GetPayloadSerializer())
+}
+
 func ResultToProtobuf(result *messages.Result) ([]byte, error) {
-	msg := &gen.Call{
+	payload, serializer, err := ToCBORPayload(result)
+	if err != nil {
+		return nil, err
+	}
+
+	msg := &gen.Yield{
 		RequestId:         result.RequestID(),
-		PayloadSerializer: 1,
+		PayloadSerializer: int32(serializer),
+		Payload:           payload,
 	}
 
 	data, err := proto.Marshal(msg)

@@ -9,6 +9,7 @@ import (
 
 type invocationFields struct {
 	gen *gen.Invocation
+	messages.BinaryPayload
 }
 
 func NewInvocationFields(gen *gen.Invocation) messages.InvocationFields {
@@ -35,11 +36,29 @@ func (r *invocationFields) KwArgs() map[string]any {
 	return nil
 }
 
+func (r *invocationFields) PayloadIsBinary() bool {
+	return true
+}
+
+func (r *invocationFields) Payload() []byte {
+	return r.gen.GetPayload()
+}
+
+func (r *invocationFields) PayloadSerializer() int {
+	return int(r.gen.GetPayloadSerializer())
+}
+
 func InvocationToProtobuf(invocation *messages.Invocation) ([]byte, error) {
+	payload, serializer, err := ToCBORPayload(invocation)
+	if err != nil {
+		return nil, err
+	}
+
 	msg := &gen.Invocation{
 		RequestId:         invocation.RequestID(),
 		RegistrationId:    invocation.RegistrationID(),
-		PayloadSerializer: 1,
+		PayloadSerializer: int32(serializer),
+		Payload:           payload,
 	}
 
 	data, err := proto.Marshal(msg)
