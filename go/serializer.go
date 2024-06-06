@@ -4,10 +4,13 @@ import (
 	"fmt"
 
 	"github.com/xconnio/wampproto-go/messages"
+	"github.com/xconnio/wampproto-go/serializers"
 	"github.com/xconnio/wampproto-protobuf/go/parsers"
 )
 
 type ProtobufSerializer struct{}
+
+var _ serializers.Serializer = &ProtobufSerializer{}
 
 func (p *ProtobufSerializer) Serialize(message messages.Message) ([]byte, error) {
 	switch message.Type() {
@@ -137,4 +140,8 @@ func (p *ProtobufSerializer) Deserialize(bytes []byte) (messages.Message, error)
 	default:
 		return nil, fmt.Errorf("unknown message type: %v", bytes[0])
 	}
+}
+
+func (p *ProtobufSerializer) Static() bool {
+	return true
 }

@@ -7,16 +7,48 @@ import (
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
-func WelcomeToProtobuf(welcome *messages.Welcome) ([]byte, error) {
-	return nil, nil
+type welcome struct {
+	gen *gen.Welcome
 }
 
-func ProtobufToWelcome(data []byte) (*messages.Welcome, error) {
-	msg := &gen.Welcome{}
-	err := proto.Unmarshal(data[1:], msg)
+func NewWelcomeFields(call *gen.Welcome) messages.WelcomeFields {
+	return &welcome{
+		gen: call,
+	}
+}
+
+func (w *welcome) SessionID() int64 {
+	return w.gen.GetSessionId()
+}
+
+func (w *welcome) Details() map[string]any {
+	return map[string]any{
+		"authid":   "anonymous",
+		"authrole": "anonymous",
+	}
+}
+
+func WelcomeToProtobuf(welcome *messages.Welcome) ([]byte, error) {
+	msg := &gen.Welcome{
+		SessionId: welcome.SessionID(),
+		AuthRole:  "anonymous",
+	}
+
+	data, err := proto.Marshal(msg)
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	byteValue := byte(messages.MessageTypeWelcome & 0xFF)
+	return append([]byte{byteValue}, data...), nil
+}
+
+func ProtobufToWelcome(data []byte) (*messages.Welcome, error) {
+	msg := &gen.Welcome{}
+	err := proto.Unmarshal(data, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	return messages.NewWelcomeWithFields(NewWelcomeFields(msg)), nil
 }
