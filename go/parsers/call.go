@@ -1,6 +1,9 @@
 package parsers
 
 import (
+	"log"
+	"sync"
+
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
@@ -9,6 +12,10 @@ import (
 
 type Call struct {
 	gen *gen.Call
+
+	args   []any
+	kwArgs map[string]any
+	once   sync.Once
 }
 
 func NewCallFields(callGen *gen.Call) messages.CallFields {
@@ -27,12 +34,24 @@ func (c *Call) Procedure() string {
 	return c.gen.GetProcedure()
 }
 
+func (c *Call) unpack() {
+	unpacked, err := FromCBORPayload(c.Payload())
+	if err != nil {
+		log.Println("error parsing CBOR payload:", err)
+	} else {
+		c.args = unpacked.Args()
+		c.kwArgs = unpacked.KwArgs()
+	}
+}
+
 func (c *Call) Args() []any {
-	return nil
+	c.once.Do(c.unpack)
+	return c.args
 }
 
 func (c *Call) KwArgs() map[string]any {
-	return nil
+	c.once.Do(c.unpack)
+	return c.kwArgs
 }
 
 func (c *Call) PayloadIsBinary() bool {
@@ -48,16 +67,26 @@ func (c *Call) PayloadSerializer() int {
 }
 
 func CallToProtobuf(call *messages.Call) ([]byte, error) {
-	payload, serializer, err := ToCBORPayload(call)
-	if err != nil {
-		return nil, err
-	}
+	var msg *gen.Call
+	if call.PayloadIsBinary() {
+		msg = &gen.Call{
+			RequestId:         call.RequestID(),
+			Procedure:         call.Procedure(),
+			PayloadSerializer: int32(call.PayloadSerializer()),
+			Payload:           call.Payload(),
+		}
+	} else {
+		payload, serializer, err := ToCBORPayload(call)
+		if err != nil {
+			return nil, err
+		}
 
-	msg := &gen.Call{
-		RequestId:         call.RequestID(),
-		Procedure:         call.Procedure(),
-		PayloadSerializer: int32(serializer),
-		Payload:           payload,
+		msg = &gen.Call{
+			RequestId:         call.RequestID(),
+			Procedure:         call.Procedure(),
+			PayloadSerializer: int32(serializer),
+			Payload:           payload,
+		}
 	}
 
 	data, err := proto.Marshal(msg)
