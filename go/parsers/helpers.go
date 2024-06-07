@@ -1,6 +1,8 @@
 package parsers
 
 import (
+	"fmt"
+
 	"github.com/fxamacker/cbor/v2"
 )
 
@@ -37,10 +39,20 @@ func ToCBORPayload(data ArgsKwArgs) ([]byte, int, error) {
 func FromCBORPayload(data []byte) (ArgsKwArgs, error) {
 	var payload []any
 	if err := cbor.Unmarshal(data, &payload); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to unmarshal cbor payload: %w", err)
 	}
 
-	args := payload[0].([]any)
-	kwArgs := payload[1].(map[string]any)
-	return &argsKwArgs{args: args, kwArgs: kwArgs}, nil
+	result := &argsKwArgs{}
+
+	args, ok := payload[0].([]any)
+	if ok {
+		result.args = args
+	}
+
+	kwArgs, ok := payload[1].(map[string]any)
+	if ok {
+		result.kwArgs = kwArgs
+	}
+
+	return result, nil
 }

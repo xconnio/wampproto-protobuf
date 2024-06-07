@@ -13,7 +13,7 @@ func ErrorToProtobuf(error *messages.Error) ([]byte, error) {
 
 func ProtobufToError(data []byte) (*messages.Error, error) {
 	msg := &gen.Error{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}
