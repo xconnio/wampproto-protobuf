@@ -1,6 +1,13 @@
 syntax = "proto3";
 
+import "protobuf/options.proto";
+
 message Register {
   int64 request_id = 1;
   string procedure = 2;
+
+  // options
+  bool disclose_caller = 3;
+  Invoke invoke = 4;
+  Match match = 5;
 }

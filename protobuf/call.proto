@@ -5,4 +5,10 @@ message Call {
   string procedure = 2;
   bytes payload = 3;
   int32 payload_serializer = 4;
+
+  // options
+  bool disclose_me = 5;
+  int32 timeout = 6;
+  bool receive_progress = 7;
+  bool progress = 8;
 }

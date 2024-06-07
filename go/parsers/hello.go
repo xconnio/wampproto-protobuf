@@ -22,7 +22,7 @@ func (h *hello) Realm() string {
 }
 
 func (h *hello) AuthID() string {
-	return h.gen.Authid
+	return h.gen.GetAuthId()
 }
 
 func (h *hello) AuthMethods() []string {
@@ -40,8 +40,8 @@ func (h *hello) Roles() map[string]any {
 func HelloToProtobuf(hello *messages.Hello) ([]byte, error) {
 	msg := &gen.Hello{
 		Realm:        hello.Realm(),
-		Authid:       hello.AuthID(),
-		Authprovider: "static",
+		AuthId:       hello.AuthID(),
+		AuthProvider: "static",
 	}
 
 	data, err := proto.Marshal(msg)
