@@ -1,6 +1,12 @@
 syntax = "proto3";
 
+import "protobuf/options.proto";
+
 message Subscribe {
   int64 request_id = 1;
   string topic = 2;
+
+    // options
+  Match match = 3;
+  bool get_retained = 4;
 }

@@ -2,5 +2,6 @@ syntax = "proto3";
 
 message Welcome {
   int64 session_id = 1;
-  string auth_role = 2;
+  string auth_id = 2;
+  string auth_role = 3;
 }

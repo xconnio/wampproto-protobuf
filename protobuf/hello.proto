@@ -2,7 +2,7 @@ syntax = "proto3";
 
 message Hello {
   string realm = 1;
-  string authid = 2;
-  string authprovider = 3;
-  repeated string authmethod = 4;
+  string auth_id = 2;
+  string auth_provider = 3;
+  repeated string auth_method = 4;
 }
