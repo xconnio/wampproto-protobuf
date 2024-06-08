@@ -62,6 +62,7 @@ exclude = [
     "node_modules",
     "site-packages",
     "venv",
+    "wampprotobuf/gen"
 ]
 
 line-length = 120
