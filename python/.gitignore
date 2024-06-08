@@ -4,4 +4,3 @@ dist/
 build/
 wampprotobuf.egg-info/
 __pycache__/
-wampprotobuf/gen

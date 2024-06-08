@@ -1,3 +1,3 @@
 from wampprotobuf.serializer import ProtobufSerializer
 
-__all__ = ['ProtobufSerializer']
+__all__ = ["ProtobufSerializer"]
