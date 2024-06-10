@@ -7,8 +7,30 @@ import (
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
+type Unsubscribed struct {
+	gen *gen.UnSubscribed
+}
+
+func NewUnsubscribedFields(gen *gen.UnSubscribed) messages.UnSubscribedFields {
+	return &Unsubscribed{gen: gen}
+}
+
+func (u *Unsubscribed) RequestID() int64 {
+	return u.gen.GetRequestId()
+}
+
 func UnsubscribedToProtobuf(unsubscribed *messages.UnSubscribed) ([]byte, error) {
-	return nil, nil
+	msg := &gen.UnSubscribed{
+		RequestId: unsubscribed.RequestID(),
+	}
+
+	data, err := proto.Marshal(msg)
+	if err != nil {
+		return nil, err
+	}
+
+	byteValue := byte(messages.MessageTypeUnSubscribed & 0xFF)
+	return append([]byte{byteValue}, data...), nil
 }
 
 func ProtobufToUnsubscribed(data []byte) (*messages.UnSubscribed, error) {
@@ -18,5 +40,5 @@ func ProtobufToUnsubscribed(data []byte) (*messages.UnSubscribed, error) {
 		return nil, err
 	}
 
-	return nil, nil
+	return messages.NewUnSubscribedWithFields(NewUnsubscribedFields(msg)), nil
 }
