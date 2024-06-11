@@ -7,8 +7,34 @@ import (
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
+type Authenticate struct {
+	gen *gen.Authenticate
+}
+
+func NewAuthenticateFields(gen *gen.Authenticate) messages.AuthenticateFields {
+	return &Authenticate{gen: gen}
+}
+
+func (a *Authenticate) Signature() string {
+	return a.gen.Signature
+}
+
+func (a *Authenticate) Extra() map[string]any {
+	return map[string]any{}
+}
+
 func AuthenticateToProtobuf(authenticate *messages.Authenticate) ([]byte, error) {
-	return nil, nil
+	msg := &gen.Authenticate{
+		Signature: authenticate.Signature(),
+	}
+
+	data, err := proto.Marshal(msg)
+	if err != nil {
+		return nil, err
+	}
+
+	byteValue := byte(messages.MessageTypeAuthenticate & 0xFF)
+	return append([]byte{byteValue}, data...), nil
 }
 
 func ProtobufToAuthenticate(data []byte) (*messages.Authenticate, error) {
@@ -18,5 +44,5 @@ func ProtobufToAuthenticate(data []byte) (*messages.Authenticate, error) {
 		return nil, err
 	}
 
-	return nil, nil
+	return messages.NewAuthenticateWithFields(NewAuthenticateFields(msg)), nil
 }
