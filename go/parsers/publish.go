@@ -27,7 +27,7 @@ func (p *Publish) RequestID() int64 {
 }
 
 func (p *Publish) Options() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (p *Publish) Topic() string {

@@ -23,7 +23,7 @@ func NewAbortFields(gen *gen.Abort) messages.AbortFields {
 }
 
 func (a *Abort) Details() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (a *Abort) Reason() string {

@@ -31,7 +31,7 @@ func (e *Error) RequestID() int64 {
 }
 
 func (e *Error) Details() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (e *Error) URI() string {

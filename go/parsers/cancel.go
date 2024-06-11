@@ -20,7 +20,7 @@ func (c *Cancel) RequestID() int64 {
 }
 
 func (c *Cancel) Options() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func CancelToProtobuf(cancel *messages.Cancel) ([]byte, error) {

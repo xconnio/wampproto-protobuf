@@ -20,7 +20,7 @@ func (r *yieldFields) RequestID() int64 {
 }
 
 func (r *yieldFields) Options() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (r *yieldFields) Args() []any {

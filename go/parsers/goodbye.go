@@ -16,7 +16,7 @@ func NewGoodByeFields(gen *gen.Goodbye) messages.GoodByeFields {
 }
 
 func (g *GoodBye) Details() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (g *GoodBye) Reason() string {

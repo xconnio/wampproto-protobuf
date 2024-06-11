@@ -20,7 +20,7 @@ func (i *Interrupt) RequestID() int64 {
 }
 
 func (i *Interrupt) Options() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func InterruptToProtobuf(interrupt *messages.Interrupt) ([]byte, error) {
