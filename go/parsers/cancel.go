@@ -7,8 +7,34 @@ import (
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
+type Cancel struct {
+	gen *gen.Cancel
+}
+
+func NewCancelFields(gen *gen.Cancel) messages.CancelFields {
+	return &Cancel{gen: gen}
+}
+
+func (c *Cancel) RequestID() int64 {
+	return c.gen.RequestId
+}
+
+func (c *Cancel) Options() map[string]any {
+	return nil
+}
+
 func CancelToProtobuf(cancel *messages.Cancel) ([]byte, error) {
-	return nil, nil
+	msg := &gen.Cancel{
+		RequestId: cancel.RequestID(),
+	}
+
+	data, err := proto.Marshal(msg)
+	if err != nil {
+		return nil, err
+	}
+
+	byteValue := byte(messages.MessageTypeCancel & 0xFF)
+	return append([]byte{byteValue}, data...), nil
 }
 
 func ProtobufToCancel(data []byte) (*messages.Cancel, error) {
@@ -18,5 +44,5 @@ func ProtobufToCancel(data []byte) (*messages.Cancel, error) {
 		return nil, err
 	}
 
-	return nil, nil
+	return messages.NewCancelWithFields(NewCancelFields(msg)), nil
 }
