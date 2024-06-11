@@ -20,7 +20,7 @@ func (r *resultFields) RequestID() int64 {
 }
 
 func (r *resultFields) Details() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (r *resultFields) Args() []any {

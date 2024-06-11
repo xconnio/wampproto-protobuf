@@ -7,8 +7,34 @@ import (
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
+type Interrupt struct {
+	gen *gen.Interrupt
+}
+
+func NewInterruptFields(gen *gen.Interrupt) messages.InterruptFields {
+	return &Interrupt{gen: gen}
+}
+
+func (i *Interrupt) RequestID() int64 {
+	return i.gen.RequestId
+}
+
+func (i *Interrupt) Options() map[string]any {
+	return map[string]any{}
+}
+
 func InterruptToProtobuf(interrupt *messages.Interrupt) ([]byte, error) {
-	return nil, nil
+	msg := &gen.Interrupt{
+		RequestId: interrupt.RequestID(),
+	}
+
+	data, err := proto.Marshal(msg)
+	if err != nil {
+		return nil, err
+	}
+
+	byteValue := byte(messages.MessageTypeInterrupt & 0xFF)
+	return append([]byte{byteValue}, data...), nil
 }
 
 func ProtobufToInterrupt(data []byte) (*messages.Interrupt, error) {
@@ -18,5 +44,5 @@ func ProtobufToInterrupt(data []byte) (*messages.Interrupt, error) {
 		return nil, err
 	}
 
-	return nil, nil
+	return messages.NewInterruptWithFields(NewInterruptFields(msg)), nil
 }

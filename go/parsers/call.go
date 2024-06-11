@@ -27,7 +27,7 @@ func (c *Call) RequestID() int64 {
 }
 
 func (c *Call) Options() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (c *Call) Procedure() string {

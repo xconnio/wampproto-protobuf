@@ -25,7 +25,7 @@ func (r *invocationFields) RegistrationID() int64 {
 }
 
 func (r *invocationFields) Details() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (r *invocationFields) Args() []any {

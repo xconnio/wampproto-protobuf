@@ -25,7 +25,7 @@ func (e *Event) PublicationID() int64 {
 }
 
 func (e *Event) Details() map[string]any {
-	return nil
+	return map[string]any{}
 }
 
 func (e *Event) Args() []any {
