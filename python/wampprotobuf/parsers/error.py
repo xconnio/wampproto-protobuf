@@ -11,6 +11,7 @@ class ErrorFields(IErrorFields):
         self._msg = msg
         self._args = None
         self._kwargs = None
+        self._unpacked = False
 
     @property
     def message_type(self) -> int:
@@ -30,6 +31,7 @@ class ErrorFields(IErrorFields):
 
     def unpack(self):
         try:
+            self._unpacked = True
             args, kwargs = helpers.from_cbor_payload(self._msg.payload)
             self._args = args
             self._kwargs = kwargs
@@ -38,10 +40,16 @@ class ErrorFields(IErrorFields):
 
     @property
     def args(self):
+        if not self._unpacked:
+            self.unpack()
+
         return self._args
 
     @property
     def kwargs(self):
+        if not self._unpacked:
+            self.unpack()
+
         return self._kwargs
 
     @property
