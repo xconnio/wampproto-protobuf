@@ -13,6 +13,7 @@ class CallFields(ICallFields):
         self._msg = msg
         self._args = None
         self._kwargs = None
+        self._unpacked = False
 
     @property
     def request_id(self) -> int:
@@ -24,6 +25,7 @@ class CallFields(ICallFields):
 
     def unpack(self):
         try:
+            self._unpacked = True
             args, kwargs = helpers.from_cbor_payload(self._msg.payload)
             self._args = args
             self._kwargs = kwargs
@@ -32,10 +34,16 @@ class CallFields(ICallFields):
 
     @property
     def args(self) -> list[Any] | None:
+        if not self._unpacked:
+            self.unpack()
+
         return self._args
 
     @property
     def kwargs(self) -> dict[str, Any] | None:
+        if not self._unpacked:
+            self.unpack()
+
         return self._kwargs
 
     @property
