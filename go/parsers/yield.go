@@ -1,58 +1,86 @@
 package parsers
 
 import (
+	"log"
+	"sync"
+
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
-type yieldFields struct {
+type Yield struct {
 	gen *gen.Yield
+
+	args   []any
+	kwArgs map[string]any
+	once   sync.Once
 }
 
 func NewYieldFields(gen *gen.Yield) messages.YieldFields {
-	return &yieldFields{gen: gen}
+	return &Yield{gen: gen}
 }
 
-func (r *yieldFields) RequestID() int64 {
-	return r.gen.GetRequestId()
+func (y *Yield) RequestID() int64 {
+	return y.gen.GetRequestId()
 }
 
-func (r *yieldFields) Options() map[string]any {
+func (y *Yield) Options() map[string]any {
 	return map[string]any{}
 }
 
-func (r *yieldFields) Args() []any {
-	return nil
+func (y *Yield) unpack() {
+	unpacked, err := FromCBORPayload(y.Payload())
+	if err != nil {
+		log.Println("error parsing CBOR payload:", err)
+	} else {
+		y.args = unpacked.Args()
+		y.kwArgs = unpacked.KwArgs()
+	}
 }
 
-func (r *yieldFields) KwArgs() map[string]any {
-	return nil
+func (y *Yield) Args() []any {
+	y.once.Do(y.unpack)
+	return y.args
 }
 
-func (r *yieldFields) PayloadIsBinary() bool {
+func (y *Yield) KwArgs() map[string]any {
+	y.once.Do(y.unpack)
+	return y.kwArgs
+}
+
+func (y *Yield) PayloadIsBinary() bool {
 	return true
 }
 
-func (r *yieldFields) Payload() []byte {
-	return r.gen.GetPayload()
+func (y *Yield) Payload() []byte {
+	return y.gen.GetPayload()
 }
 
-func (r *yieldFields) PayloadSerializer() int {
-	return int(r.gen.GetPayloadSerializer())
+func (y *Yield) PayloadSerializer() int {
+	return int(y.gen.GetPayloadSerializer())
 }
 
 func YieldToProtobuf(yield *messages.Yield) ([]byte, error) {
-	payload, serializer, err := ToCBORPayload(yield)
-	if err != nil {
-		return nil, err
-	}
+	var msg *gen.Yield
+	if yield.PayloadIsBinary() {
+		msg = &gen.Yield{
+			RequestId:         yield.RequestID(),
+			PayloadSerializer: int32(yield.PayloadSerializer()),
+			Payload:           yield.Payload(),
+		}
+	} else {
+		payload, serializer, err := ToCBORPayload(yield)
+		if err != nil {
+			return nil, err
+		}
 
-	msg := &gen.Yield{
-		RequestId:         yield.RequestID(),
-		PayloadSerializer: int32(serializer),
-		Payload:           payload,
+		msg = &gen.Yield{
+			RequestId:         yield.RequestID(),
+			PayloadSerializer: int32(serializer),
+			Payload:           payload,
+		}
 	}
 
 	data, err := proto.Marshal(msg)
