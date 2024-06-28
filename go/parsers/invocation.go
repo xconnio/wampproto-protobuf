@@ -1,64 +1,92 @@
 package parsers
 
 import (
+	"log"
+	"sync"
+
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
-type invocationFields struct {
+type Invocation struct {
 	gen *gen.Invocation
-	messages.BinaryPayload
+
+	args   []any
+	kwArgs map[string]any
+	once   sync.Once
 }
 
 func NewInvocationFields(gen *gen.Invocation) messages.InvocationFields {
-	return &invocationFields{gen: gen}
+	return &Invocation{gen: gen}
 }
 
-func (r *invocationFields) RequestID() int64 {
-	return r.gen.GetRequestId()
+func (i *Invocation) RequestID() int64 {
+	return i.gen.GetRequestId()
 }
 
-func (r *invocationFields) RegistrationID() int64 {
-	return r.gen.GetRegistrationId()
+func (i *Invocation) RegistrationID() int64 {
+	return i.gen.GetRegistrationId()
 }
 
-func (r *invocationFields) Details() map[string]any {
+func (i *Invocation) Details() map[string]any {
 	return map[string]any{}
 }
 
-func (r *invocationFields) Args() []any {
-	return nil
+func (i *Invocation) unpack() {
+	unpacked, err := FromCBORPayload(i.Payload())
+	if err != nil {
+		log.Println("error parsing CBOR payload:", err)
+	} else {
+		i.args = unpacked.Args()
+		i.kwArgs = unpacked.KwArgs()
+	}
 }
 
-func (r *invocationFields) KwArgs() map[string]any {
-	return nil
+func (i *Invocation) Args() []any {
+	i.once.Do(i.unpack)
+	return i.args
 }
 
-func (r *invocationFields) PayloadIsBinary() bool {
+func (i *Invocation) KwArgs() map[string]any {
+	i.once.Do(i.unpack)
+	return i.kwArgs
+}
+
+func (i *Invocation) PayloadIsBinary() bool {
 	return true
 }
 
-func (r *invocationFields) Payload() []byte {
-	return r.gen.GetPayload()
+func (i *Invocation) Payload() []byte {
+	return i.gen.GetPayload()
 }
 
-func (r *invocationFields) PayloadSerializer() int {
-	return int(r.gen.GetPayloadSerializer())
+func (i *Invocation) PayloadSerializer() int {
+	return int(i.gen.GetPayloadSerializer())
 }
 
 func InvocationToProtobuf(invocation *messages.Invocation) ([]byte, error) {
-	payload, serializer, err := ToCBORPayload(invocation)
-	if err != nil {
-		return nil, err
-	}
+	var msg *gen.Invocation
+	if invocation.PayloadIsBinary() {
+		msg = &gen.Invocation{
+			RequestId:         invocation.RequestID(),
+			RegistrationId:    invocation.RegistrationID(),
+			PayloadSerializer: int32(invocation.PayloadSerializer()),
+			Payload:           invocation.Payload(),
+		}
+	} else {
+		payload, serializer, err := ToCBORPayload(invocation)
+		if err != nil {
+			return nil, err
+		}
 
-	msg := &gen.Invocation{
-		RequestId:         invocation.RequestID(),
-		RegistrationId:    invocation.RegistrationID(),
-		PayloadSerializer: int32(serializer),
-		Payload:           payload,
+		msg = &gen.Invocation{
+			RequestId:         invocation.RequestID(),
+			RegistrationId:    invocation.RegistrationID(),
+			PayloadSerializer: int32(serializer),
+			Payload:           payload,
+		}
 	}
 
 	data, err := proto.Marshal(msg)
