@@ -135,8 +135,12 @@ func (p *ProtobufSerializer) Deserialize(bytes []byte) (messages.Message, error)
 		return parsers.ProtobufToSubscribe(bytes[1:])
 	case messages.MessageTypeSubscribed:
 		return parsers.ProtobufToSubscribed(bytes[1:])
+	case messages.MessageTypeUnSubscribe:
+		return parsers.ProtobufToUnsubscribe(bytes[1:])
 	case messages.MessageTypeUnSubscribed:
 		return parsers.ProtobufToUnsubscribed(bytes[1:])
+	case messages.MessageTypeError:
+		return parsers.ProtobufToError(bytes[1:])
 	default:
 		return nil, fmt.Errorf("unknown message type: %v", bytes[0])
 	}
