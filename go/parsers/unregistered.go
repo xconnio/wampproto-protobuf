@@ -35,7 +35,7 @@ func UnregisteredToProtobuf(unregistered *messages.UnRegistered) ([]byte, error)
 
 func ProtobufToUnregistered(data []byte) (*messages.UnRegistered, error) {
 	msg := &gen.UnRegistered{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

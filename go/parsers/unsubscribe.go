@@ -40,7 +40,7 @@ func UnsubscribeToProtobuf(unsubscribe *messages.UnSubscribe) ([]byte, error) {
 
 func ProtobufToUnsubscribe(data []byte) (*messages.UnSubscribe, error) {
 	msg := &gen.UnSubscribe{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

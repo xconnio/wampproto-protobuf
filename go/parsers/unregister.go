@@ -40,7 +40,7 @@ func UnregisterToProtobuf(unregister *messages.UnRegister) ([]byte, error) {
 
 func ProtobufToUnregister(data []byte) (*messages.UnRegister, error) {
 	msg := &gen.UnRegister{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

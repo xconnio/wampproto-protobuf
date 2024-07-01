@@ -39,7 +39,7 @@ func GoodbyeToProtobuf(goodbye *messages.GoodBye) ([]byte, error) {
 
 func ProtobufToGoodbye(data []byte) (*messages.GoodBye, error) {
 	msg := &gen.Goodbye{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}
