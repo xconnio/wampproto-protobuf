@@ -39,7 +39,7 @@ func InterruptToProtobuf(interrupt *messages.Interrupt) ([]byte, error) {
 
 func ProtobufToInterrupt(data []byte) (*messages.Interrupt, error) {
 	msg := &gen.Interrupt{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

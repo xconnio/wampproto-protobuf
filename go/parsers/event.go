@@ -72,7 +72,7 @@ func EventToProtobuf(event *messages.Event) ([]byte, error) {
 
 func ProtobufToEvent(data []byte) (*messages.Event, error) {
 	msg := &gen.Event{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

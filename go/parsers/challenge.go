@@ -49,7 +49,7 @@ func ChallengeToProtobuf(challenge *messages.Challenge) ([]byte, error) {
 
 func ProtobufToChallenge(data []byte) (*messages.Challenge, error) {
 	msg := &gen.Challenge{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

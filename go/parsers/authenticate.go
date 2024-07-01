@@ -39,7 +39,7 @@ func AuthenticateToProtobuf(authenticate *messages.Authenticate) ([]byte, error)
 
 func ProtobufToAuthenticate(data []byte) (*messages.Authenticate, error) {
 	msg := &gen.Authenticate{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

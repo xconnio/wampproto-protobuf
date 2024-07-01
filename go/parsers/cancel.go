@@ -39,7 +39,7 @@ func CancelToProtobuf(cancel *messages.Cancel) ([]byte, error) {
 
 func ProtobufToCancel(data []byte) (*messages.Cancel, error) {
 	msg := &gen.Cancel{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

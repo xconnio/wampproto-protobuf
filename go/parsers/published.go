@@ -40,7 +40,7 @@ func PublishedToProtobuf(published *messages.Published) ([]byte, error) {
 
 func ProtobufToPublished(data []byte) (*messages.Published, error) {
 	msg := &gen.Published{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

@@ -35,7 +35,7 @@ func UnsubscribedToProtobuf(unsubscribed *messages.UnSubscribed) ([]byte, error)
 
 func ProtobufToUnsubscribed(data []byte) (*messages.UnSubscribed, error) {
 	msg := &gen.UnSubscribed{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}

@@ -44,7 +44,7 @@ func SubscribeToProtobuf(subscribe *messages.Subscribe) ([]byte, error) {
 
 func ProtobufToSubscribe(data []byte) (*messages.Subscribe, error) {
 	msg := &gen.Subscribe{}
-	err := proto.Unmarshal(data[1:], msg)
+	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}
