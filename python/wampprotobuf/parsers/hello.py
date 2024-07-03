@@ -21,7 +21,7 @@ class HelloFields(IHelloFields):
 
     @property
     def authid(self) -> str:
-        return self._msg.authid
+        return self._msg.auth_id
 
     @property
     def authrole(self) -> str:
@@ -29,7 +29,7 @@ class HelloFields(IHelloFields):
 
     @property
     def authmethods(self) -> list[str]:
-        return self._msg.authmethod
+        return []
 
     @property
     def authextra(self) -> dict:
