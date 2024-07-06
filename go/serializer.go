@@ -38,11 +38,11 @@ func (p *ProtobufSerializer) Serialize(message messages.Message) ([]byte, error)
 	case messages.MessageTypeRegistered:
 		msg := message.(*messages.Registered)
 		return parsers.RegisteredToProtobuf(msg)
-	case messages.MessageTypeUnRegister:
-		msg := message.(*messages.UnRegister)
+	case messages.MessageTypeUnregister:
+		msg := message.(*messages.Unregister)
 		return parsers.UnregisterToProtobuf(msg)
-	case messages.MessageTypeUnRegistered:
-		msg := message.(*messages.UnRegistered)
+	case messages.MessageTypeUnregistered:
+		msg := message.(*messages.Unregistered)
 		return parsers.UnregisteredToProtobuf(msg)
 	case messages.MessageTypePublish:
 		msg := message.(*messages.Publish)
@@ -71,11 +71,11 @@ func (p *ProtobufSerializer) Serialize(message messages.Message) ([]byte, error)
 	case messages.MessageTypeSubscribed:
 		msg := message.(*messages.Subscribed)
 		return parsers.SubscribedToProtobuf(msg)
-	case messages.MessageTypeUnSubscribe:
-		msg := message.(*messages.UnSubscribe)
+	case messages.MessageTypeUnsubscribe:
+		msg := message.(*messages.Unsubscribe)
 		return parsers.UnsubscribeToProtobuf(msg)
-	case messages.MessageTypeUnSubscribed:
-		msg := message.(*messages.UnSubscribed)
+	case messages.MessageTypeUnsubscribed:
+		msg := message.(*messages.Unsubscribed)
 		return parsers.UnsubscribedToProtobuf(msg)
 	case messages.MessageTypeCancel:
 		msg := message.(*messages.Cancel)
@@ -115,9 +115,9 @@ func (p *ProtobufSerializer) Deserialize(bytes []byte) (messages.Message, error)
 		return parsers.ProtobufToRegister(bytes[1:])
 	case messages.MessageTypeRegistered:
 		return parsers.ProtobufToRegistered(bytes[1:])
-	case messages.MessageTypeUnRegister:
+	case messages.MessageTypeUnregister:
 		return parsers.ProtobufToUnregister(bytes[1:])
-	case messages.MessageTypeUnRegistered:
+	case messages.MessageTypeUnregistered:
 		return parsers.ProtobufToUnregistered(bytes[1:])
 	case messages.MessageTypeAbort:
 		return parsers.ProtobufToAbort(bytes[1:])
@@ -135,9 +135,9 @@ func (p *ProtobufSerializer) Deserialize(bytes []byte) (messages.Message, error)
 		return parsers.ProtobufToSubscribe(bytes[1:])
 	case messages.MessageTypeSubscribed:
 		return parsers.ProtobufToSubscribed(bytes[1:])
-	case messages.MessageTypeUnSubscribe:
+	case messages.MessageTypeUnsubscribe:
 		return parsers.ProtobufToUnsubscribe(bytes[1:])
-	case messages.MessageTypeUnSubscribed:
+	case messages.MessageTypeUnsubscribed:
 		return parsers.ProtobufToUnsubscribed(bytes[1:])
 	case messages.MessageTypeError:
 		return parsers.ProtobufToError(bytes[1:])
