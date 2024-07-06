@@ -1,10 +1,10 @@
 from wampproto.messages import Message
-from wampproto.messages.unsubscribed import IUnSubscribedFields, UnSubscribed
+from wampproto.messages.unsubscribed import IUnsubscribedFields, Unsubscribed
 
 from wampprotobuf.gen import unsubscribed_pb2
 
 
-class UnSubscribedFields(IUnSubscribedFields):
+class UnSubscribedFields(IUnsubscribedFields):
     def __init__(self, msg: unsubscribed_pb2.UnSubscribed):
         self._msg = msg
 
@@ -17,10 +17,10 @@ def from_protobuf(payload: bytes) -> Message:
     result = unsubscribed_pb2.UnSubscribed()
     result.ParseFromString(payload)
 
-    return UnSubscribed(UnSubscribedFields(result))
+    return Unsubscribed(UnSubscribedFields(result))
 
 
-def to_protobuf(unsubscribed: UnSubscribed) -> bytes:
+def to_protobuf(unsubscribed: Unsubscribed) -> bytes:
     result = unsubscribed_pb2.UnSubscribed()
     result.request_id = unsubscribed.request_id
 
