@@ -11,7 +11,7 @@ type Unsubscribed struct {
 	gen *gen.UnSubscribed
 }
 
-func NewUnsubscribedFields(gen *gen.UnSubscribed) messages.UnSubscribedFields {
+func NewUnsubscribedFields(gen *gen.UnSubscribed) messages.UnsubscribedFields {
 	return &Unsubscribed{gen: gen}
 }
 
@@ -19,7 +19,7 @@ func (u *Unsubscribed) RequestID() int64 {
 	return u.gen.GetRequestId()
 }
 
-func UnsubscribedToProtobuf(unsubscribed *messages.UnSubscribed) ([]byte, error) {
+func UnsubscribedToProtobuf(unsubscribed *messages.Unsubscribed) ([]byte, error) {
 	msg := &gen.UnSubscribed{
 		RequestId: unsubscribed.RequestID(),
 	}
@@ -29,16 +29,16 @@ func UnsubscribedToProtobuf(unsubscribed *messages.UnSubscribed) ([]byte, error)
 		return nil, err
 	}
 
-	byteValue := byte(messages.MessageTypeUnSubscribed & 0xFF)
+	byteValue := byte(messages.MessageTypeUnsubscribed & 0xFF)
 	return append([]byte{byteValue}, data...), nil
 }
 
-func ProtobufToUnsubscribed(data []byte) (*messages.UnSubscribed, error) {
+func ProtobufToUnsubscribed(data []byte) (*messages.Unsubscribed, error) {
 	msg := &gen.UnSubscribed{}
 	err := proto.Unmarshal(data, msg)
 	if err != nil {
 		return nil, err
 	}
 
-	return messages.NewUnSubscribedWithFields(NewUnsubscribedFields(msg)), nil
+	return messages.NewUnsubscribedWithFields(NewUnsubscribedFields(msg)), nil
 }
