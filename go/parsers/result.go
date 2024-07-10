@@ -4,6 +4,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
+	"github.com/xconnio/wampproto-go/serializers"
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
@@ -44,14 +45,14 @@ func (r *resultFields) PayloadSerializer() int {
 }
 
 func ResultToProtobuf(result *messages.Result) ([]byte, error) {
-	payload, serializer, err := ToCBORPayload(result)
+	payload, err := serializers.EncodeCBOR(result.Args(), result.KwArgs())
 	if err != nil {
 		return nil, err
 	}
 
 	msg := &gen.Yield{
 		RequestId:         result.RequestID(),
-		PayloadSerializer: int32(serializer),
+		PayloadSerializer: int32(serializers.CBORSerializerID),
 		Payload:           payload,
 	}
 
