@@ -5,7 +5,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Challenge(_message.Message):
-    __slots__ = ("auth_method", "challenge")
+    __slots__ = ["auth_method", "challenge"]
     AUTH_METHOD_FIELD_NUMBER: _ClassVar[int]
     CHALLENGE_FIELD_NUMBER: _ClassVar[int]
     auth_method: str
