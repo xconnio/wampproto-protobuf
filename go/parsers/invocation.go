@@ -22,11 +22,11 @@ func NewInvocationFields(gen *gen.Invocation) messages.InvocationFields {
 	return &Invocation{gen: gen}
 }
 
-func (i *Invocation) RequestID() int64 {
+func (i *Invocation) RequestID() uint64 {
 	return i.gen.GetRequestId()
 }
 
-func (i *Invocation) RegistrationID() int64 {
+func (i *Invocation) RegistrationID() uint64 {
 	return i.gen.GetRegistrationId()
 }
 
@@ -62,8 +62,8 @@ func (i *Invocation) Payload() []byte {
 	return i.gen.GetPayload()
 }
 
-func (i *Invocation) PayloadSerializer() int {
-	return int(i.gen.GetPayloadSerializer())
+func (i *Invocation) PayloadSerializer() uint64 {
+	return i.gen.GetPayloadSerializer()
 }
 
 func InvocationToProtobuf(invocation *messages.Invocation) ([]byte, error) {
@@ -72,7 +72,7 @@ func InvocationToProtobuf(invocation *messages.Invocation) ([]byte, error) {
 		msg = &gen.Invocation{
 			RequestId:         invocation.RequestID(),
 			RegistrationId:    invocation.RegistrationID(),
-			PayloadSerializer: int32(invocation.PayloadSerializer()),
+			PayloadSerializer: invocation.PayloadSerializer(),
 			Payload:           invocation.Payload(),
 		}
 	} else {
@@ -84,7 +84,7 @@ func InvocationToProtobuf(invocation *messages.Invocation) ([]byte, error) {
 		msg = &gen.Invocation{
 			RequestId:         invocation.RequestID(),
 			RegistrationId:    invocation.RegistrationID(),
-			PayloadSerializer: int32(serializer),
+			PayloadSerializer: serializer,
 			Payload:           payload,
 		}
 	}

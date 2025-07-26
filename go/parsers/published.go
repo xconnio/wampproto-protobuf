@@ -15,11 +15,11 @@ func NewPublishedFields(gen *gen.Published) messages.PublishedFields {
 	return &Published{gen: gen}
 }
 
-func (p *Published) RequestID() int64 {
+func (p *Published) RequestID() uint64 {
 	return p.gen.GetRequestId()
 }
 
-func (p *Published) PublicationID() int64 {
+func (p *Published) PublicationID() uint64 {
 	return p.gen.GetPublicationId()
 }
 

@@ -22,7 +22,7 @@ func NewYieldFields(gen *gen.Yield) messages.YieldFields {
 	return &Yield{gen: gen}
 }
 
-func (y *Yield) RequestID() int64 {
+func (y *Yield) RequestID() uint64 {
 	return y.gen.GetRequestId()
 }
 
@@ -58,8 +58,8 @@ func (y *Yield) Payload() []byte {
 	return y.gen.GetPayload()
 }
 
-func (y *Yield) PayloadSerializer() int {
-	return int(y.gen.GetPayloadSerializer())
+func (y *Yield) PayloadSerializer() uint64 {
+	return y.gen.GetPayloadSerializer()
 }
 
 func YieldToProtobuf(yield *messages.Yield) ([]byte, error) {
@@ -67,7 +67,7 @@ func YieldToProtobuf(yield *messages.Yield) ([]byte, error) {
 	if yield.PayloadIsBinary() {
 		msg = &gen.Yield{
 			RequestId:         yield.RequestID(),
-			PayloadSerializer: int32(yield.PayloadSerializer()),
+			PayloadSerializer: yield.PayloadSerializer(),
 			Payload:           yield.Payload(),
 		}
 	} else {
@@ -78,7 +78,7 @@ func YieldToProtobuf(yield *messages.Yield) ([]byte, error) {
 
 		msg = &gen.Yield{
 			RequestId:         yield.RequestID(),
-			PayloadSerializer: int32(serializer),
+			PayloadSerializer: serializer,
 			Payload:           payload,
 		}
 	}

@@ -15,7 +15,7 @@ func NewResultFields(gen *gen.Result) messages.ResultFields {
 	return &resultFields{gen: gen}
 }
 
-func (r *resultFields) RequestID() int64 {
+func (r *resultFields) RequestID() uint64 {
 	return r.gen.GetRequestId()
 }
 
@@ -39,8 +39,8 @@ func (r *resultFields) Payload() []byte {
 	return r.gen.GetPayload()
 }
 
-func (r *resultFields) PayloadSerializer() int {
-	return int(r.gen.GetPayloadSerializer())
+func (r *resultFields) PayloadSerializer() uint64 {
+	return r.gen.GetPayloadSerializer()
 }
 
 func ResultToProtobuf(result *messages.Result) ([]byte, error) {
@@ -51,7 +51,7 @@ func ResultToProtobuf(result *messages.Result) ([]byte, error) {
 
 	msg := &gen.Yield{
 		RequestId:         result.RequestID(),
-		PayloadSerializer: int32(serializer),
+		PayloadSerializer: serializer,
 		Payload:           payload,
 	}
 

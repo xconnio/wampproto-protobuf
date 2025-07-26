@@ -15,7 +15,7 @@ func NewSubscribeFields(gen *gen.Subscribe) messages.SubscribeFields {
 	return &Subscribe{gen: gen}
 }
 
-func (s *Subscribe) RequestID() int64 {
+func (s *Subscribe) RequestID() uint64 {
 	return s.gen.GetRequestId()
 }
 

@@ -15,7 +15,7 @@ func NewInterruptFields(gen *gen.Interrupt) messages.InterruptFields {
 	return &Interrupt{gen: gen}
 }
 
-func (i *Interrupt) RequestID() int64 {
+func (i *Interrupt) RequestID() uint64 {
 	return i.gen.RequestId
 }
 

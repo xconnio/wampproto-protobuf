@@ -58,7 +58,7 @@ func AbortToProtobuf(abort *messages.Abort) ([]byte, error) {
 
 	msg := &gen.Abort{
 		Reason:            abort.Reason(),
-		PayloadSerializer: int32(serializer),
+		PayloadSerializer: serializer,
 		Payload:           payload,
 	}
 

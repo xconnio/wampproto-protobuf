@@ -22,7 +22,7 @@ func NewCallFields(callGen *gen.Call) messages.CallFields {
 	return &Call{gen: callGen}
 }
 
-func (c *Call) RequestID() int64 {
+func (c *Call) RequestID() uint64 {
 	return c.gen.GetRequestId()
 }
 
@@ -62,8 +62,8 @@ func (c *Call) Payload() []byte {
 	return c.gen.GetPayload()
 }
 
-func (c *Call) PayloadSerializer() int {
-	return int(c.gen.GetPayloadSerializer())
+func (c *Call) PayloadSerializer() uint64 {
+	return c.gen.GetPayloadSerializer()
 }
 
 func CallToProtobuf(call *messages.Call) ([]byte, error) {
@@ -72,7 +72,7 @@ func CallToProtobuf(call *messages.Call) ([]byte, error) {
 		msg = &gen.Call{
 			RequestId:         call.RequestID(),
 			Procedure:         call.Procedure(),
-			PayloadSerializer: int32(call.PayloadSerializer()),
+			PayloadSerializer: call.PayloadSerializer(),
 			Payload:           call.Payload(),
 		}
 	} else {
@@ -84,7 +84,7 @@ func CallToProtobuf(call *messages.Call) ([]byte, error) {
 		msg = &gen.Call{
 			RequestId:         call.RequestID(),
 			Procedure:         call.Procedure(),
-			PayloadSerializer: int32(serializer),
+			PayloadSerializer: serializer,
 			Payload:           payload,
 		}
 	}
