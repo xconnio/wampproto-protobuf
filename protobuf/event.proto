@@ -1,13 +1,13 @@
 syntax = "proto3";
 
 message Event {
-  int64 subscription_id = 1;
-  int64 publication_id = 2;
+  uint64 subscription_id = 1;
+  uint64 publication_id = 2;
   bytes payload = 3;
-  int32 payload_serializer = 4;
+  uint64 payload_serializer = 4;
 
   // details
-  int64 publisher = 5;
+  uint64 publisher = 5;
   string publisher_auth_id = 6;
   string publisher_auth_role = 7;
 }

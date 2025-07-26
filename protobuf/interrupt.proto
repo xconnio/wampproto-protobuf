@@ -1,5 +1,5 @@
 syntax = "proto3";
 
 message Interrupt {
-  int64 request_id = 1;
+  uint64 request_id = 1;
 }
