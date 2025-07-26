@@ -17,7 +17,7 @@ func NewWelcomeFields(call *gen.Welcome) messages.WelcomeFields {
 	}
 }
 
-func (w *welcome) SessionID() int64 {
+func (w *welcome) SessionID() uint64 {
 	return w.gen.GetSessionId()
 }
 

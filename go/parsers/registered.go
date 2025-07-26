@@ -15,11 +15,11 @@ func NewRegisteredFields(gen *gen.Registered) messages.RegisteredFields {
 	return &Registered{gen: gen}
 }
 
-func (r *Registered) RequestID() int64 {
+func (r *Registered) RequestID() uint64 {
 	return r.gen.GetRequestId()
 }
 
-func (r *Registered) RegistrationID() int64 {
+func (r *Registered) RegistrationID() uint64 {
 	return r.gen.RegistrationId
 }
 

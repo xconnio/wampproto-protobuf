@@ -5,7 +5,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Subscribed(_message.Message):
-    __slots__ = ("request_id", "subscription_id")
+    __slots__ = ["request_id", "subscription_id"]
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     SUBSCRIPTION_ID_FIELD_NUMBER: _ClassVar[int]
     request_id: int

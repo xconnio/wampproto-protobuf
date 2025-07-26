@@ -1,9 +1,9 @@
 syntax = "proto3";
 
 message Error {
-  int64 message_type = 1;
-  int64 request_id = 2;
+  uint64 message_type = 1;
+  uint64 request_id = 2;
   string uri = 3;
   bytes payload = 4;
-  int32 payload_serializer = 5;
+  uint64 payload_serializer = 5;
 }

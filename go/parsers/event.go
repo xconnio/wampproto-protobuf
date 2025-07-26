@@ -16,11 +16,11 @@ func NewEventFields(gen *gen.Event) messages.EventFields {
 	return &Event{gen: gen}
 }
 
-func (e *Event) SubscriptionID() int64 {
+func (e *Event) SubscriptionID() uint64 {
 	return e.gen.SubscriptionId
 }
 
-func (e *Event) PublicationID() int64 {
+func (e *Event) PublicationID() uint64 {
 	return e.gen.PublicationId
 }
 
@@ -44,8 +44,8 @@ func (e *Event) Payload() []byte {
 	return e.gen.GetPayload()
 }
 
-func (e *Event) PayloadSerializer() int {
-	return int(e.gen.GetPayloadSerializer())
+func (e *Event) PayloadSerializer() uint64 {
+	return e.gen.GetPayloadSerializer()
 }
 
 func EventToProtobuf(event *messages.Event) ([]byte, error) {
@@ -57,7 +57,7 @@ func EventToProtobuf(event *messages.Event) ([]byte, error) {
 	msg := &gen.Event{
 		SubscriptionId:    event.SubscriptionID(),
 		PublicationId:     event.PublicationID(),
-		PayloadSerializer: int32(serializer),
+		PayloadSerializer: serializer,
 		Payload:           payload,
 	}
 

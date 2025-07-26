@@ -24,7 +24,7 @@ func (a *argsKwArgs) KwArgs() map[string]any {
 	return a.kwArgs
 }
 
-func ToCBORPayload(data ArgsKwArgs) ([]byte, int, error) {
+func ToCBORPayload(data ArgsKwArgs) ([]byte, uint64, error) {
 	var payload []any
 	payload = append(payload, data.Args())
 	payload = append(payload, data.KwArgs())

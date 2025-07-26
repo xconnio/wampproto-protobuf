@@ -15,7 +15,7 @@ func NewUnsubscribedFields(gen *gen.UnSubscribed) messages.UnsubscribedFields {
 	return &Unsubscribed{gen: gen}
 }
 
-func (u *Unsubscribed) RequestID() int64 {
+func (u *Unsubscribed) RequestID() uint64 {
 	return u.gen.GetRequestId()
 }
 

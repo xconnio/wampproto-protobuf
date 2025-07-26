@@ -15,11 +15,11 @@ func NewUnregisterFields(gen *gen.UnRegister) messages.UnregisterFields {
 	return &Unregister{gen: gen}
 }
 
-func (u *Unregister) RequestID() int64 {
+func (u *Unregister) RequestID() uint64 {
 	return u.gen.GetRequestId()
 }
 
-func (u *Unregister) RegistrationID() int64 {
+func (u *Unregister) RegistrationID() uint64 {
 	return u.gen.GetRegistrationId()
 }
 

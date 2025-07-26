@@ -15,7 +15,7 @@ func NewUnregisteredFields(gen *gen.UnRegistered) messages.UnregisteredFields {
 	return &Unregistered{gen: gen}
 }
 
-func (u *Unregistered) RequestID() int64 {
+func (u *Unregistered) RequestID() uint64 {
 	return u.gen.GetRequestId()
 }
 

@@ -22,11 +22,11 @@ func NewErrorFields(gen *gen.Error) messages.ErrorFields {
 	return &Error{gen: gen}
 }
 
-func (e *Error) MessageType() int64 {
+func (e *Error) MessageType() uint64 {
 	return e.gen.MessageType
 }
 
-func (e *Error) RequestID() int64 {
+func (e *Error) RequestID() uint64 {
 	return e.gen.RequestId
 }
 
@@ -66,8 +66,8 @@ func (e *Error) Payload() []byte {
 	return e.gen.GetPayload()
 }
 
-func (e *Error) PayloadSerializer() int {
-	return int(e.gen.GetPayloadSerializer())
+func (e *Error) PayloadSerializer() uint64 {
+	return e.gen.GetPayloadSerializer()
 }
 
 func ErrorToProtobuf(error *messages.Error) ([]byte, error) {
@@ -77,7 +77,7 @@ func ErrorToProtobuf(error *messages.Error) ([]byte, error) {
 			MessageType:       error.MessageType(),
 			RequestId:         error.RequestID(),
 			Uri:               error.URI(),
-			PayloadSerializer: int32(error.PayloadSerializer()),
+			PayloadSerializer: error.PayloadSerializer(),
 			Payload:           error.Payload(),
 		}
 	} else {
@@ -90,7 +90,7 @@ func ErrorToProtobuf(error *messages.Error) ([]byte, error) {
 			MessageType:       error.MessageType(),
 			RequestId:         error.RequestID(),
 			Uri:               error.URI(),
-			PayloadSerializer: int32(serializer),
+			PayloadSerializer: serializer,
 			Payload:           payload,
 		}
 	}

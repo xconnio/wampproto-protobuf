@@ -15,11 +15,11 @@ func NewUnsubscribeFields(gen *gen.UnSubscribe) messages.UnsubscribeFields {
 	return &Unsubscribe{gen: gen}
 }
 
-func (u *Unsubscribe) RequestID() int64 {
+func (u *Unsubscribe) RequestID() uint64 {
 	return u.gen.GetRequestId()
 }
 
-func (u *Unsubscribe) SubscriptionID() int64 {
+func (u *Unsubscribe) SubscriptionID() uint64 {
 	return u.gen.GetSubscriptionId()
 }
 

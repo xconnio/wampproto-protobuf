@@ -22,7 +22,7 @@ func NewPublishFields(gen *gen.Publish) messages.PublishFields {
 	return &Publish{gen: gen}
 }
 
-func (p *Publish) RequestID() int64 {
+func (p *Publish) RequestID() uint64 {
 	return p.gen.GetRequestId()
 }
 
@@ -62,8 +62,8 @@ func (p *Publish) Payload() []byte {
 	return p.gen.GetPayload()
 }
 
-func (p *Publish) PayloadSerializer() int {
-	return int(p.gen.GetPayloadSerializer())
+func (p *Publish) PayloadSerializer() uint64 {
+	return p.gen.GetPayloadSerializer()
 }
 
 func PublishToProtobuf(publish *messages.Publish) ([]byte, error) {
@@ -72,7 +72,7 @@ func PublishToProtobuf(publish *messages.Publish) ([]byte, error) {
 		msg = &gen.Publish{
 			RequestId:         publish.RequestID(),
 			Topic:             publish.Topic(),
-			PayloadSerializer: int32(publish.PayloadSerializer()),
+			PayloadSerializer: publish.PayloadSerializer(),
 			Payload:           publish.Payload(),
 		}
 	} else {
@@ -84,7 +84,7 @@ func PublishToProtobuf(publish *messages.Publish) ([]byte, error) {
 		msg = &gen.Publish{
 			RequestId:         publish.RequestID(),
 			Topic:             publish.Topic(),
-			PayloadSerializer: int32(serializer),
+			PayloadSerializer: serializer,
 			Payload:           payload,
 		}
 	}

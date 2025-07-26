@@ -15,7 +15,7 @@ func NewRegisterFields(gen *gen.Register) messages.RegisterFields {
 	return &Register{gen: gen}
 }
 
-func (r *Register) RequestID() int64 {
+func (r *Register) RequestID() uint64 {
 	return r.gen.GetRequestId()
 }
 

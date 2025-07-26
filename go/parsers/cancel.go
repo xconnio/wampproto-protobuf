@@ -15,7 +15,7 @@ func NewCancelFields(gen *gen.Cancel) messages.CancelFields {
 	return &Cancel{gen: gen}
 }
 
-func (c *Cancel) RequestID() int64 {
+func (c *Cancel) RequestID() uint64 {
 	return c.gen.RequestId
 }
 
