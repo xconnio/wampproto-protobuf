@@ -92,7 +92,7 @@ func (p *ProtobufSerializer) Serialize(message messages.Message) ([]byte, error)
 }
 
 func (p *ProtobufSerializer) Deserialize(bytes []byte) (messages.Message, error) {
-	switch bytes[0] {
+	switch uint64(bytes[0]) {
 	case messages.MessageTypeHello:
 		return parsers.ProtobufToHello(bytes[1:])
 	case messages.MessageTypeWelcome:
