@@ -5,7 +5,7 @@ go 1.23.0
 require (
 	github.com/fxamacker/cbor/v2 v2.9.0
 	github.com/stretchr/testify v1.10.0
-	github.com/xconnio/wampproto-go v0.0.0-20250726202904-7364116669a6
+	github.com/xconnio/wampproto-go v0.0.0-20250729091733-63896eb589ba
 	google.golang.org/protobuf v1.36.6
 )
 
