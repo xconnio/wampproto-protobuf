@@ -5,11 +5,9 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Abort(_message.Message):
-    __slots__ = ["payload", "payload_serializer", "reason"]
-    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
-    PAYLOAD_SERIALIZER_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("reason", "payload_serializer_id")
     REASON_FIELD_NUMBER: _ClassVar[int]
-    payload: bytes
-    payload_serializer: int
+    PAYLOAD_SERIALIZER_ID_FIELD_NUMBER: _ClassVar[int]
     reason: str
-    def __init__(self, reason: _Optional[str] = ..., payload: _Optional[bytes] = ..., payload_serializer: _Optional[int] = ...) -> None: ...
+    payload_serializer_id: int
+    def __init__(self, reason: _Optional[str] = ..., payload_serializer_id: _Optional[int] = ...) -> None: ...
