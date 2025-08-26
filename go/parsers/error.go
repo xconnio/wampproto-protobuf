@@ -7,6 +7,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
+	"github.com/xconnio/wampproto-go/serializers"
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
@@ -39,12 +40,12 @@ func (e *Error) URI() string {
 }
 
 func (e *Error) unpack() {
-	unpacked, err := FromCBORPayload(e.Payload())
+	args, kwargs, err := serializers.DecodeCBOR(e.Payload())
 	if err != nil {
 		log.Println("error parsing CBOR payload:", err)
 	} else {
-		e.args = unpacked.Args()
-		e.kwArgs = unpacked.KwArgs()
+		e.args = args
+		e.kwArgs = kwargs
 	}
 }
 
@@ -81,7 +82,7 @@ func ErrorToProtobuf(error *messages.Error) ([]byte, error) {
 			Payload:           error.Payload(),
 		}
 	} else {
-		payload, serializer, err := ToCBORPayload(error)
+		payload, err := serializers.EncodeCBOR(error.Args(), error.KwArgs())
 		if err != nil {
 			return nil, err
 		}
@@ -90,7 +91,7 @@ func ErrorToProtobuf(error *messages.Error) ([]byte, error) {
 			MessageType:       error.MessageType(),
 			RequestId:         error.RequestID(),
 			Uri:               error.URI(),
-			PayloadSerializer: serializer,
+			PayloadSerializer: serializers.CBORSerializerID,
 			Payload:           payload,
 		}
 	}

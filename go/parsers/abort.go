@@ -7,6 +7,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
+	"github.com/xconnio/wampproto-go/serializers"
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
@@ -31,12 +32,12 @@ func (a *Abort) Reason() string {
 }
 
 func (a *Abort) unpack() {
-	unpacked, err := FromCBORPayload(a.gen.GetPayload())
+	args, kwargs, err := serializers.DecodeCBOR(a.gen.GetPayload())
 	if err != nil {
 		log.Println("error parsing CBOR payload:", err)
 	} else {
-		a.args = unpacked.Args()
-		a.kwArgs = unpacked.KwArgs()
+		a.args = args
+		a.kwArgs = kwargs
 	}
 }
 
@@ -51,14 +52,14 @@ func (a *Abort) KwArgs() map[string]any {
 }
 
 func AbortToProtobuf(abort *messages.Abort) ([]byte, error) {
-	payload, serializer, err := ToCBORPayload(abort)
+	payload, err := serializers.EncodeCBOR(abort.Args(), abort.KwArgs())
 	if err != nil {
 		return nil, err
 	}
 
 	msg := &gen.Abort{
 		Reason:            abort.Reason(),
-		PayloadSerializer: serializer,
+		PayloadSerializer: serializers.CBORSerializerID,
 		Payload:           payload,
 	}
 
