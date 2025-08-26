@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-message UnRegistered {
+message Unregistered {
   uint64 request_id = 1;
-  uint64 registration_id = 2;
 }

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-message UnSubscribe {
+message Unsubscribe {
   uint64 request_id = 1;
   uint64 subscription_id = 2;
 }

@@ -1,6 +1,9 @@
 syntax = "proto3";
 
 message Challenge {
-  string auth_method = 1;
+  string authmethod = 1;
   string challenge = 2;
+  string salt = 3;
+  uint32 iterations = 4;
+  uint32 keylen = 5;
 }

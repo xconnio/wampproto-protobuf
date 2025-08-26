@@ -2,6 +2,30 @@ syntax = "proto3";
 
 message Welcome {
   uint64 session_id = 1;
-  string auth_id = 2;
-  string auth_role = 3;
+  string authid = 2;
+  string authrole = 3;
+  string authmethod = 4;
+  string authprovider = 5;
+  Roles roles = 6;
+
+  message Roles {
+    Dealer dealer = 1;
+    Broker broker = 2;
+
+    message Dealer {
+      bool caller_identification = 1;
+      bool call_timeout = 2;
+      bool call_canceling = 3;
+      bool progressive_call_results = 4;
+      bool pattern_based_registration = 5;
+      bool shared_registration = 6;
+    }
+
+    message Broker {
+      bool publisher_identification = 1;
+      bool publisher_exclusion = 2;
+      bool acknowledge_event_received = 3;
+      bool pattern_based_subscription = 4;
+    }
+  }
 }
