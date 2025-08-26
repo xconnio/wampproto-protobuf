@@ -46,7 +46,6 @@ def from_protobuf(payload: bytes) -> Message:
 def to_protobuf(hello: Hello) -> bytes:
     result = hello_pb2.Hello()
     result.realm = hello.realm
-    result.auth_id = hello.authid
-    result.auth_provider = "static"
+    result.authid = hello.authid
 
     return result.SerializeToString()
