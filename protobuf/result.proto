@@ -2,9 +2,5 @@ syntax = "proto3";
 
 message Result {
   uint64 request_id = 1;
-  bytes payload = 2;
-  uint64 payload_serializer = 3;
-
-  // details
-  bool progress = 4;
+  uint64 payload_serializer_id = 2;
 }

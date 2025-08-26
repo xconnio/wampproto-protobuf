@@ -4,6 +4,5 @@ message Error {
   uint64 message_type = 1;
   uint64 request_id = 2;
   string uri = 3;
-  bytes payload = 4;
-  uint64 payload_serializer = 5;
+  uint64 payload_serializer_id = 4;
 }

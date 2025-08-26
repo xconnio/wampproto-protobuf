@@ -1,12 +1,13 @@
 syntax = "proto3";
 
-import "protobuf/options.proto";
-
 message Subscribe {
   uint64 request_id = 1;
   string topic = 2;
-
-    // options
   Match match = 3;
-  bool get_retained = 4;
+
+  enum Match {
+    EXACT = 0;
+    PREFIX = 1;
+    WILDCARD = 2;
+  }
 }

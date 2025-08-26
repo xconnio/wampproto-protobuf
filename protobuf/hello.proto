@@ -2,7 +2,42 @@ syntax = "proto3";
 
 message Hello {
   string realm = 1;
-  string auth_id = 2;
-  string auth_provider = 3;
-  repeated string auth_method = 4;
+  string authid = 2;
+  repeated string authmethods = 3;
+  Roles roles = 4;
+  string public_key = 5;
+
+  message Roles {
+    Caller caller = 1;
+    Callee callee = 2;
+    Publisher publisher = 3;
+    Subscriber subscriber = 4;
+
+    message Caller {
+      bool caller_identification = 1;
+      bool call_timeout = 2;
+      bool call_canceling = 3;
+      bool progressive_call_results = 4;
+    }
+
+    message Callee {
+      bool caller_identification = 1;
+      bool call_timeout = 2;
+      bool call_canceling = 3;
+      bool progressive_call_results = 4;
+      bool pattern_based_registration = 5;
+      bool shared_registration = 6;
+    }
+
+    message Publisher {
+      bool publisher_identification = 1;
+      bool publisher_exclusion = 2;
+      bool acknowledge_event_received = 3;
+    }
+
+    message Subscriber {
+      bool publisher_identification = 1;
+      bool pattern_based_subscription = 2;
+    }
+  }
 }

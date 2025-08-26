@@ -3,6 +3,9 @@ syntax = "proto3";
 message Publish {
   uint64 request_id = 1;
   string topic = 2;
-  bytes payload = 3;
-  uint64 payload_serializer = 4;
+  uint64 payload_serializer_id = 3;
+
+  // options
+  bool exclude_me = 4;
+  bool acknowledge = 5;
 }

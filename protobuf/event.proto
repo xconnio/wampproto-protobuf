@@ -3,11 +3,11 @@ syntax = "proto3";
 message Event {
   uint64 subscription_id = 1;
   uint64 publication_id = 2;
-  bytes payload = 3;
-  uint64 payload_serializer = 4;
+  uint64 payload_serializer_id = 3;
 
-  // details
-  uint64 publisher = 5;
-  string publisher_auth_id = 6;
-  string publisher_auth_role = 7;
+  // options
+  uint64 publisher = 4;
+  string publisher_authid = 5;
+  string publisher_authrole = 6;
+  string topic = 7;
 }

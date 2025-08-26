@@ -3,14 +3,11 @@ syntax = "proto3";
 message Invocation {
   uint64 request_id = 1;
   uint64 registration_id = 2;
-  bytes payload = 3;
-  uint64 payload_serializer = 4;
+  uint64 payload_serializer_id = 3;
 
   // details
-  uint64 caller = 5;
-  string caller_auth_id = 6;
-  string caller_auth_role = 7;
-
-  bool receive_progress = 8;
-  bool progress = 9;
+  uint64 caller = 4;
+  string caller_authid = 5;
+  string caller_authrole = 6;
+  string procedure = 7;
 }
