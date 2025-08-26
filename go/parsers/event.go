@@ -4,6 +4,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/xconnio/wampproto-go/messages"
+	"github.com/xconnio/wampproto-go/serializers"
 	"github.com/xconnio/wampproto-protobuf/go/gen"
 )
 
@@ -49,7 +50,7 @@ func (e *Event) PayloadSerializer() uint64 {
 }
 
 func EventToProtobuf(event *messages.Event) ([]byte, error) {
-	payload, serializer, err := ToCBORPayload(event)
+	payload, err := serializers.EncodeCBOR(event.Args(), event.KwArgs())
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +58,7 @@ func EventToProtobuf(event *messages.Event) ([]byte, error) {
 	msg := &gen.Event{
 		SubscriptionId:    event.SubscriptionID(),
 		PublicationId:     event.PublicationID(),
-		PayloadSerializer: serializer,
+		PayloadSerializer: serializers.CBORSerializerID,
 		Payload:           payload,
 	}
 
