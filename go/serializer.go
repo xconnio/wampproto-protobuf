@@ -5,7 +5,13 @@ import (
 
 	"github.com/xconnio/wampproto-go/messages"
 	"github.com/xconnio/wampproto-go/serializers"
+	"github.com/xconnio/wampproto-go/transports"
 	"github.com/xconnio/wampproto-protobuf/go/parsers"
+)
+
+const (
+	ProtobufSerializerID     transports.Serializer = 15
+	ProtobufSplitSubProtocol                       = "wamp.2.protobuf.split_payload"
 )
 
 type ProtobufSerializer struct{}
