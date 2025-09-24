@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	ProtobufSerializerID     transports.Serializer = 15
-	ProtobufSplitSubProtocol                       = "wamp.2.protobuf.split_payload"
+	SplitSerializerID transports.Serializer = 15
+	SplitSubProtocol                        = "wamp.2.protobuf.split_payload"
 )
 
 type ProtobufSerializer struct{}
